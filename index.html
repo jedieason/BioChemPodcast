@@ -15,7 +15,7 @@
             padding: 10px;
             margin: 0;
             font-size: 24px;
-            color: #a35555;
+            color: #5574a3;
         }
         .container {
             column-count: 3;
@@ -23,67 +23,103 @@
             padding: 1em;
         }
         .podcast {
-            background-color: #f4f4f4;
+            background-color: #fff;
             display: inline-block;
             margin: 0 0 1em;
             width: 100%;
             box-sizing: border-box;
-            border-radius: 5px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
         }
         .podcast h2 {
             font-size: 1em;
             margin: 0;
             padding: 0.5em;
-            background-color: #d7d7d7;
+            background-color: #f7f7f7;
             color: #333;
+            border-bottom: 1px solid #ddd;
         }
         .podcast .player {
             padding: 1em;
-        }
-        /* Custom audio player styles */
-        .audio-player {
             display: flex;
             align-items: center;
         }
+        .audio-player {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
         .play-btn {
-            width: 35px;
-            height: 35px;
-            background-color: #ababab;
+            width: 40px;
+            height: 40px;
+            background-color: #e0e7ff;
             border: none;
             border-radius: 50%;
-            color: #fff;
-            font-size: 18px;
+            color: #333;
+            font-size: 16px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-right: 1em;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
             transition: background-color 0.3s ease;
         }
         .play-btn:hover {
-            background-color: #7c7c7c;
+            background-color: #c3d2fc;
         }
         .progress-bar {
             flex-grow: 1;
-            height: 8px;
-            background-color: #ddd;
-            border-radius: 4px;
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
             cursor: pointer;
             position: relative;
+            overflow: visible; /* Changed from 'hidden' to 'visible' */
         }
         .progress {
-            height: 8px;
-            background-color: #a35555;
+            height: 100%;
+            background-color: #5c9ded;
             width: 0%;
-            border-radius: 4px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .progress-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #3778ff;
+            position: absolute;
+            top: -4px;
+            left: 0;
+            transform: translateX(-50%);
+            z-index: 1; /* Added z-index to ensure visibility */
         }
         .time {
             margin-left: 1em;
-            font-size: 0.8em;
+            font-size: 0.9em;
             white-space: nowrap;
+            color: #666;
         }
         .speed-control {
             margin-left: 1em;
-            font-size: 0.8em;
+            font-size: 0.9em;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><polygon points="0,0 10,0 5,6" fill="%23666"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 10px 6px;
+            padding-right: 30px;
+        }
+        .speed-control::-ms-expand {
+            display: none;
         }
         @media screen and (max-width: 800px) {
             .container {
@@ -109,6 +145,7 @@
                     <button class="play-btn">►</button>
                     <div class="progress-bar">
                         <div class="progress"></div>
+                        <div class="progress-indicator"></div>
                     </div>
                     <div class="time">0:00 / 0:00</div>
                     <select class="speed-control">
@@ -130,6 +167,7 @@
                     <button class="play-btn">►</button>
                     <div class="progress-bar">
                         <div class="progress"></div>
+                        <div class="progress-indicator"></div>
                     </div>
                     <div class="time">0:00 / 0:00</div>
                     <select class="speed-control">
@@ -151,6 +189,7 @@
                     <button class="play-btn">►</button>
                     <div class="progress-bar">
                         <div class="progress"></div>
+                        <div class="progress-indicator"></div>
                     </div>
                     <div class="time">0:00 / 0:00</div>
                     <select class="speed-control">
@@ -172,6 +211,7 @@
                     <button class="play-btn">►</button>
                     <div class="progress-bar">
                         <div class="progress"></div>
+                        <div class="progress-indicator"></div>
                     </div>
                     <div class="time">0:00 / 0:00</div>
                     <select class="speed-control">
@@ -193,6 +233,7 @@
                     <button class="play-btn">►</button>
                     <div class="progress-bar">
                         <div class="progress"></div>
+                        <div class="progress-indicator"></div>
                     </div>
                     <div class="time">0:00 / 0:00</div>
                     <select class="speed-control">
@@ -214,6 +255,7 @@
                 var playBtn = player.querySelector('.play-btn');
                 var progressBar = player.querySelector('.progress-bar');
                 var progress = player.querySelector('.progress');
+                var progressIndicator = player.querySelector('.progress-indicator');
                 var time = player.querySelector('.time');
                 var speedControl = player.querySelector('.speed-control');
 
@@ -239,6 +281,7 @@
                     var duration = audio.duration;
                     var percent = (currentTime / duration) * 100;
                     progress.style.width = percent + '%';
+                    progressIndicator.style.left = percent + '%';
 
                     var currentMinutes = Math.floor(currentTime / 60);
                     var currentSeconds = Math.floor(currentTime % 60);
@@ -262,6 +305,7 @@
                 audio.addEventListener('ended', function() {
                     playBtn.textContent = '►';
                     progress.style.width = '0%';
+                    progressIndicator.style.left = '0%';
                 });
 
                 // Speed control
